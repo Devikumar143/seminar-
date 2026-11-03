@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JoySeminar - Project Report | Joy University</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* RESET & CORE PRINT SPECS */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #3f3f46;
+      color: #0f172a;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.38;
+      font-size: 11px;
+    }
+
+    /* SCREEN WRAPPER */
+    .screen-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      padding: 30px 0 60px;
+    }
+
+    /* A4 PAGE SPECIFICATION */
+    .page {
+      width: 210mm;
+      height: 297mm;
+      min-height: 297mm;
+      max-height: 297mm;
+      position: relative;
+      background: #fafaf9;
+      background-image: radial-gradient(#e2e8f0 0.85px, transparent 0.85px);
+      background-size: 17px 17px;
+      padding: 13mm 14mm 10mm 14mm;
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35), 0 10px 10px rgba(0, 0, 0, 0.22);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    @media print {
+      body {
+        background: transparent;
+      }
+      .screen-container {
+        padding: 0;
+        gap: 0;
+      }
+      .page {
+        box-shadow: none;
+        margin: 0;
+        page-break-after: always !important;
+        break-after: page !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    /* ACTION BAR FOR BROWSER PREVIEW */
+    .action-bar {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(12px);
+      padding: 10px 20px;
+      border-radius: 9999px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-action {
+      background: #e11d48;
+      color: #ffffff;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 9999px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .btn-action:hover {
+      background: #be123c;
+      transform: translateY(-1px);
+    }
+
+    /* TOP HEADER BAR (ON ALL 6 PAGES) */
+    .top-header {
+      background: #0f172a;
+      border-radius: 14px;
+      padding: 11px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #ffffff;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+      border: 1.5px solid #1e293b;
+      margin-bottom: 11px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-logo {
+      width: 38px;
+      height: 38px;
+      background: #e11d48;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.25);
+    }
+
+    .logo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 7.5px);
+      gap: 3.5px;
+    }
+
+    .logo-dot {
+      width: 7.5px;
+      height: 7.5px;
+      background: #ffffff;
+      border-radius: 2px;
+    }
+
+    .header-title-box h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      line-height: 1.1;
+      color: #ffffff;
+    }
+
+    .header-title-box p {
+      font-size: 10px;
+      font-style: italic;
+      color: #94a3b8;
+      margin-top: 1px;
+    }
+
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+    }
+
+    .page-pill {
+      background: #fde047;
+      color: #0f172a;
+      font-family: 'Outfit', sans-serif;
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2.5px 12px;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+    }
+
+    .page-topic-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.2px;
+    }
+
+    /* SUB-HEADER METADATA BANNER (PAGE 1) */
+    .meta-strip {
+      background: #fefce8;
+      border: 1.5px solid #ca8a04;
+      border-radius: 7px;
+      padding: 5.5px 12px;
+      font-size: 9.8px;
+      color: #854d0e;
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: 0.1px;
+    }
+
+    .meta-strip strong {
+      color: #713f12;
+      font-weight: 700;
+    }
+
+    /* SECTION TITLES WITH PINK NUMBER BADGE */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    .num-badge {
+      width: 21px;
+      height: 21px;
+      background: #f43f5e;
+      color: #ffffff;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11.5px;
+      font-weight: 800;
+      flex-shrink: 0;
+      box-shadow: 0 1px 3px rgba(244, 63, 94, 0.4);
+    }
+
+    /* CARDS & CONTAINERS */
+    .card {
+      background: #ffffff;
+      border: 1.5px solid #1e293b;
+      border-radius: 10px;
+      padding: 9px 12px;
+      position: relative;
+      box-shadow: 2px 2px 0px rgba(15, 23, 42, 0.08);
+    }
+
+    /* WASHI TAPE ACCENTS */
+    .washi-tape {
+      position: absolute;
+      top: -6px;
+      width: 46px;
+      height: 13px;
+      border-radius: 2px;
+      opacity: 0.85;
+      z-index: 2;
+    }
+
+    .tape-left { left: 16px; transform: rotate(-2.5deg); }
+    .tape-right { right: 16px; transform: rotate(2deg); }
+    .tape-center { left: calc(50% - 23px); transform: rotate(-1deg); }
+
+    .tape-yellow { background: #fef08a; border-left: 1px dashed rgba(180, 83, 9, 0.3); border-right: 1px dashed rgba(180, 83, 9, 0.3); }
+    .tape-green { background: #bbf7d0; border-left: 1px dashed rgba(21, 128, 61, 0.3); border-right: 1px dashed rgba(21, 128, 61, 0.3); }
+    .tape-pink { background: #fbcfe8; border-left: 1px dashed rgba(190, 24, 93, 0.3); border-right: 1px dashed rgba(190, 24, 93, 0.3); }
+    .tape-cyan { background: #bae6fd; border-left: 1px dashed rgba(3, 105, 161, 0.3); border-right: 1px dashed rgba(3, 105, 161, 0.3); }
+
+    /* PASTEL CARD BACKGROUNDS */
+    .bg-rose-tint { background: #fff1f2; }
+    .bg-mint-tint { background: #ecfdf5; }
+    .bg-sky-tint { background: #eff6ff; }
+    .bg-lavender-tint { background: #f5f3ff; }
+    .bg-amber-tint { background: #fefce8; }
+    .bg-slate-tint { background: #f8fafc; }
+
+    /* PILLS & TAGS */
+    .pill-tag {
+      display: inline-block;
+      font-size: 9.8px;
+      font-weight: 600;
+      padding: 3.5px 9px;
+      border-radius: 9999px;
+      border: 1px solid #334155;
+      background: #ffffff;
+      color: #1e293b;
+      margin: 2px 2px;
+    }
+
+    /* GRID UTILITIES */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 11px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .flex-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* CODE BOX */
+    .code-box {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      line-height: 1.36;
+      padding: 12px 14px;
+      border-radius: 9px;
+      border: 1.5px solid #1e293b;
+      overflow: hidden;
+      white-space: pre-wrap;
+    }
+
+    .code-keyword { color: #f43f5e; font-weight: 700; }
+    .code-func { color: #38bdf8; font-weight: 600; }
+    .code-comment { color: #64748b; font-style: italic; }
+    .code-str { color: #a3e635; }
+    .code-num { color: #fbbf24; }
+
+    /* TABLES */
+    .clean-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5px;
+      background: #ffffff;
+      border: 1.5px solid #1e293b;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .clean-table th {
+      background: #f1f5f9;
+      color: #0f172a;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      padding: 5.5px 8px;
+      border-bottom: 1.5px solid #1e293b;
+      text-align: left;
+    }
+
+    .clean-table td {
+      padding: 5.5px 8px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #334155;
+      vertical-align: middle;
+    }
+
+    .clean-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .clean-table tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    .badge-tc {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: #e11d48;
+      background: #ffe4e6;
+      padding: 1.5px 4.5px;
+      border-radius: 4px;
+      font-size: 8.8px;
+    }
+
+    /* DIAGRAM BOXES */
+    .flow-node {
+      border: 1.5px solid #1e293b;
+      border-radius: 8px;
+      padding: 7px 9px;
+      background: #ffffff;
+      text-align: center;
+      position: relative;
+    }
+
+    .flow-node .title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.1;
+    }
+
+    .flow-node .subtitle {
+      font-size: 8.2px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    /* CALLOUT QUOTE BOX */
+    .quote-box {
+      background: #111827;
+      color: #f8fafc;
+      border-radius: 9px;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border: 1.5px solid #1e293b;
+    }
+
+    .quote-mark {
+      font-family: 'Outfit', sans-serif;
+      font-size: 34px;
+      line-height: 1;
+      color: #f43f5e;
+      font-weight: 900;
+    }
+
+    .quote-text {
+      font-size: 10.5px;
+      line-height: 1.38;
+      color: #f1f5f9;
+      font-weight: 500;
+    }
+
+    /* CHECKLIST */
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      font-size: 9.6px;
+      color: #1e293b;
+      margin-bottom: 5.5px;
+    }
+
+    .custom-check {
+      width: 13px;
+      height: 13px;
+      border: 1.5px solid #0f172a;
+      border-radius: 3px;
+      display: inline-block;
+      flex-shrink: 0;
+      margin-top: 1px;
+      background: #ffffff;
+    }
+
+    .footer-note {
+      font-size: 8.8px;
+      color: #64748b;
+      padding-top: 5px;
+      border-top: 1px solid #cbd5e1;
+    }
+
+    /* MOCK PASS UI */
+    .mock-window {
+      background: #ffffff;
+      border: 1.5px solid #1e293b;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 2px 2px 0px rgba(15, 23, 42, 0.12);
+    }
+
+    .mock-window-header {
+      background: #f1f5f9;
+      border-bottom: 1.5px solid #1e293b;
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mock-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .dot {
+      width: 7.5px;
+      height: 7.5px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+
+    .dot-red { background: #ef4444; }
+    .dot-yellow { background: #eab308; }
+    .dot-green { background: #22c55e; }
+
+    .mock-window-title {
+      font-size: 8.8px;
+      font-weight: 700;
+      color: #475569;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .mock-body {
+      padding: 9px 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Action Bar for Web Preview -->
+  <div class="action-bar no-print">
+    <button class="btn-action" onclick="window.print()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+      Print / Save PDF (A4)
+    </button>
+  </div>
+
+  <div class="screen-container">
+
+    <!-- ==========================================
+         PAGE 1: OVERVIEW
+    =========================================== -->
+    <div class="page" id="page-1">
+      <div>
+        <!-- Header -->
+        <header class="top-header">
+          <div class="header-left">
+            <div class="header-logo">
+              <div class="logo-grid">
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+              </div>
+            </div>
+            <div class="header-title-box">
+              <h1>JoySeminar</h1>
+              <p>Intelligent University Seminar Registration &amp; Verification Platform</p>
+            </div>
+          </div>
+          <div class="header-right">
+            <span class="page-pill">PAGE 1 / 6</span>
+            <span class="page-topic-title">Overview</span>
+          </div>
+        </header>
+
+        <!-- Sub-header metadata strip -->
+        <div class="meta-strip">
+          <strong>Project Report</strong> | <strong>Joy University</strong> | Guide: <strong>Ambika Ma'am</strong> | Academic Year: <strong>2026-2027</strong> | <strong>Devikumar Anegondhi</strong> [2024BTCY005] | Department of CSE (Cybersecurity)
+        </div>
+
+        <!-- Section 1: What is JoySeminar? -->
+        <section style="margin-bottom: 12px;">
+          <h2 class="section-title">
+            <span class="num-badge">1</span> What is JoySeminar?
+          </h2>
+          <div style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 12px;">
+            <!-- Left: Description and feature tags -->
+            <div class="card bg-amber-tint" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <p style="font-size: 10.5px; line-height: 1.45; color: #1e293b; font-weight: 500;">
+                A centralized campus web workspace to organize, discover, reserve, and verify university seminars — attendee quotas, digital QR entry passes, instant device-camera attendance, waitlist auto-promotion, and tamper-proof PDF certificates consolidated in one place.
+              </p>
+              <div style="margin-top: 8px;">
+                <span class="pill-tag" style="background:#e0e7ff;">Seminar Discovery</span>
+                <span class="pill-tag" style="background:#fce7f3;">Encrypted QR Pass</span>
+                <span class="pill-tag" style="background:#dcfce7;">Live QR Scanner</span>
+                <span class="pill-tag" style="background:#fef3c7;">Instant Check-in</span>
+                <span class="pill-tag" style="background:#ede9fe;">Auto-Certificates</span>
+                <span class="pill-tag" style="background:#ccfbf1;">Public Verification</span>
+                <span class="pill-tag" style="background:#fee2e2;">FIFO Waitlist</span>
+                <span class="pill-tag" style="background:#e0f2fe;">Role-Based Access</span>
+                <span class="pill-tag" style="background:#f1f5f9;">Live Analytics</span>
+                <span class="pill-tag" style="background:#fae8ff;">Automated Alerts</span>
+              </div>
+            </div>
+
+            <!-- Right: Interactive Mock UI Preview -->
+            <div class="mock-window">
+              <div class="mock-window-header">
+                <div class="mock-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="mock-window-title">JoySeminar • Live Pass Preview</div>
+                <span style="font-size: 8px; font-weight: 700; color: #059669; background: #d1fae5; padding: 2px 7px; border-radius: 999px;">PASS VALID</span>
+              </div>
+              <div class="mock-body" style="display: flex; gap: 10px; align-items: center;">
+                <div style="flex: 1;">
+                  <div style="font-size: 8.5px; font-weight: 700; color: #64748b; text-transform: uppercase;">JOY UNIVERSITY • CS-2026</div>
+                  <div style="font-size: 11.5px; font-weight: 800; color: #0f172a; font-family: 'Outfit'; margin: 2px 0;">Cybersecurity &amp; Threat AI</div>
+                  <div style="font-size: 9.5px; color: #334155;">Devikumar A. (2024BTCY005)</div>
+                  <div style="font-size: 8.5px; color: #64748b; margin-top: 2px;">Oct 18 • 10:00 AM • Kalam Hall</div>
+                  <div style="margin-top: 6px; font-size: 9px; font-weight: 700; color: #0284c7;">
+                    Confirmed • Seat #18 / 100
+                  </div>
+                </div>
+                <!-- Mock QR Code SVG -->
+                <div style="width: 72px; height: 72px; border: 1.5px solid #0f172a; border-radius: 7px; padding: 3px; background: #ffffff; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                  <svg width="62" height="62" viewBox="0 0 24 24" fill="#0f172a">
+                    <path d="M2 2h8v8H2V2zm2 2v4h4V4H4zm10-2h8v8h-8V2zm2 2v4h4V4h-4zM2 14h8v8H2v-8zm2 2v4h4v-4H4zm14 0h4v4h-4v-4zm-4-2h2v2h-2v-2zm-2 2h2v2h-2v-2zm4 4h2v2h-2v-2zm2-2h2v2h-2v-2zm-6 2h2v2h-2v-2zm4-6h2v2h-2v-2zm-2 2h2v2h-2v-2z"/>
+                  </svg>
+                </div>
+              </div>
+              <div style="background: #f8fafc; border-top: 1px dashed #cbd5e1; padding: 4px 10px; font-size: 8.2px; color: #64748b; text-align: center;">
+                Checks: student_id • seminar_id • token_uuid • duplicate_guard
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 2: Problem > Solution -->
+        <section style="margin-bottom: 12px;">
+          <h2 class="section-title">
+            <span class="num-badge">2</span> Problem &gt; Solution
+          </h2>
+          <div style="display: grid; grid-template-columns: 1fr 28px 1fr; gap: 8px; align-items: center;">
+            <!-- Problem Card -->
+            <div class="card bg-rose-tint" style="border-color: #e11d48;">
+              <span class="washi-tape tape-yellow tape-left"></span>
+              <div style="font-family: 'Outfit'; font-size: 11px; font-weight: 800; color: #be123c; margin-bottom: 5px; text-transform: uppercase;">
+                The Traditional Problem
+              </div>
+              <ul style="padding-left: 14px; font-size: 9.5px; color: #334155; line-height: 1.45;">
+                <li>Paper passes easily lost, forgotten, or shared.</li>
+                <li>Slow manual paper sign-in queues causing congestion.</li>
+                <li>Fake, forged, or unverified participation certificates.</li>
+                <li>Overbooked seminar halls beyond fire code safety limits.</li>
+                <li>No automated waitlists when registered students don't show.</li>
+              </ul>
+            </div>
+
+            <!-- Arrow -->
+            <div style="display: flex; justify-content: center; align-items: center;">
+              <div style="width: 26px; height: 26px; background: #e11d48; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ffffff; font-weight: 900; box-shadow: 0 2px 4px rgba(225, 29, 72, 0.4);">
+                ➔
+              </div>
+            </div>
+
+            <!-- Solution Card -->
+            <div class="card bg-mint-tint" style="border-color: #059669;">
+              <span class="washi-tape tape-green tape-right"></span>
+              <div style="font-family: 'Outfit'; font-size: 11px; font-weight: 800; color: #047857; margin-bottom: 5px; text-transform: uppercase;">
+                JoySeminar Fixes
+              </div>
+              <ul style="padding-left: 14px; font-size: 9.5px; color: #334155; line-height: 1.45;">
+                <li>Single-use cryptographic QR passes rendered on mobile.</li>
+                <li>Sub-second device camera QR scanner at venue doors.</li>
+                <li>Tamper-proof PDF certificates with live public hash verify.</li>
+                <li>Strict concurrency locking preventing overbooking.</li>
+                <li>Automated FIFO waitlist promotion upon cancellations.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: Main Goal -->
+        <section style="margin-bottom: 12px;">
+          <h2 class="section-title">
+            <span class="num-badge">3</span> Main Goal
+          </h2>
+          <div class="quote-box">
+            <span class="quote-mark">“</span>
+            <div class="quote-text">
+              Build a centralized university seminar platform where academic events are organized, seats are reserved with digital QR passes, attendance is verified instantaneously via camera scanning, and tamper-proof certificates are generated and validated.
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 4: System at a Glance -->
+        <section>
+          <h2 class="section-title">
+            <span class="num-badge">4</span> System at a Glance
+          </h2>
+          <!-- Flow diagram -->
+          <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; margin-bottom: 9px;">
+            <div class="flow-node bg-rose-tint">
+              <div class="title">University Users</div>
+              <div class="subtitle">Admin • Speaker • Student</div>
+            </div>
+            <div class="flow-node bg-lavender-tint">
+              <div class="title">Browser UI</div>
+              <div class="subtitle">React 19 • Tailwind • Vite</div>
+            </div>
+            <div class="flow-node bg-amber-tint">
+              <div class="title">Client State</div>
+              <div class="subtitle">AuthContext • QR Scanner</div>
+            </div>
+            <div class="flow-node bg-sky-tint">
+              <div class="title">Express REST API</div>
+              <div class="subtitle">/api/seminars • /attendance</div>
+            </div>
+            <div class="flow-node bg-mint-tint">
+              <div class="title">PostgreSQL DB</div>
+              <div class="subtitle">Normalized Relational Data</div>
+            </div>
+          </div>
+
+          <!-- Bottom details boxes -->
+          <div style="display: grid; grid-template-columns: 1fr 1.6fr; gap: 9px;">
+            <div class="card bg-slate-tint" style="border-style: dashed; padding: 8px 11px;">
+              <div style="font-family: 'Outfit'; font-size: 10.5px; font-weight: 700; color: #0f172a;">PDFKit &amp; QR Engine</div>
+              <div style="font-size: 8.8px; color: #475569; margin-top: 2px;">
+                On-the-fly vector pass &amp; certificate synthesis with embedded 2D QR matrix tokens.
+              </div>
+            </div>
+            <div class="card bg-amber-tint" style="padding: 8px 11px;">
+              <span class="washi-tape tape-yellow tape-right"></span>
+              <div style="font-size: 9px; color: #713f12; line-height: 1.35;">
+                <strong>Engineering Challenge:</strong> Enforce strict auditorium capacity, eliminate duplicate check-ins, automate waitlist promotions, and issue cryptographically verifiable certificates in sub-second latency.
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="footer-note" style="text-align: right;">
+        Joy University • Department of CSE &amp; Cybersecurity • Academic Session 2026-2027
+      </div>
+    </div>
+
+    <!-- ==========================================
+         PAGE 2: REQUIREMENTS & ROLES
+    =========================================== -->
+    <div class="page" id="page-2">
+      <div>
+        <!-- Header -->
+        <header class="top-header">
+          <div class="header-left">
+            <div class="header-logo">
+              <div class="logo-grid">
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+              </div>
+            </div>
+            <div class="header-title-box">
+              <h1>JoySeminar</h1>
+              <p>What the system must do - and how well</p>
+            </div>
+          </div>
+          <div class="header-right">
+            <span class="page-pill">PAGE 2 / 6</span>
+            <span class="page-topic-title">Requirements &amp; Roles</span>
+          </div>
+        </header>
+
+        <!-- Section 1: Functional Requirements (12 items) -->
+        <section style="margin-bottom: 14px;">
+          <h2 class="section-title">
+            <span class="num-badge">1</span> Functional Requirements
+          </h2>
+          <div class="grid-3" style="gap: 10px;">
+            <div class="card bg-slate-tint" style="padding: 8px 11px;">
+              <div style="font-family: 'Outfit'; font-size: 10.5px; font-weight: 700; color: #e11d48; margin-bottom: 2px;">1. Seminar Discovery</div>
+              <div style="font-size: 8.8px; color: #334155;">Browse upcoming talks, speaker bios, topics, venues, and live seat counters.</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 11px;">
+              <div style="font-family: 'Outfit'; font-size: 10.5px; font-weight: 700; color: #e11d48; margin-bottom: 2px;">2. Seat Reservation</div>
+              <div style="font-size: 8.8px; color: #334155;">One-click student booking with transactional capacity enforcement.</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 11px;">
+              <div style="font-family: 'Outfit'; font-size: 10.5px; font-weight: 700; color: #e11d48; margin-bottom: 2px;">3. Digital QR Pass</div>
+              <div style="font-size: 8.8px; color: #334155;">Unique cryptographic QR token generated and downloadable as A5 entry pass.</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 11px;">
+              <div style="font-family: 'Outfit'; font-size: 10.5px; font-weight: 700; color: #e11d48; margin-bottom: 2px;">4. Live Camera Scanner</div>
+              <div style="font-size: 8.8px; color: #334155;">Browser-based HTML5 camera scanner for organizers at seminar hall doors.</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 11px;">
+              <div style="font-family: 'Outfit'; font-size: 10.5px; font-weight: 700; color: #e11d48; margin-bottom: 2px;">5. Duplicate Check Guard</div>
+              <div style="font-size: 8.8px; color: #334155;">Rejects re-scanned passes instantly with exact original check-in timestamp.</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 11px;">
+              <div style="font-family: 'Outfit'; font-size: 10.5px; font-weight: 700; color: #e11d48; margin-bottom: 2px;">6. FIFO Waitlist Engine</div>
+              <div style="font-size: 8.8px; color: #334155;">Automated queue promotion and alert when a registered student cancels.</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 11px;">
+              <div style="font-family: 'Outfit'; font-size: 10.5px; font-weight: 700; color: #e11d48; margin-bottom: 2px;">7. Automated Certificate</div>
+              <div style="font-size: 8.8px; color: #334155;">Instant PDFKit vector certificate generation upon verified check-in.</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 11px;">
+              <div style="font-family: 'Outfit'; font-size: 10.5px; font-weight: 700; color: #e11d48; margin-bottom: 2px;">8. Verification Portal</div>
+              <div style="font-size: 8.8px; color: #334155;">Public authenticity route (/verify-certificate/:id) for recruiters &amp; employers.</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 11px;">
+              <div style="font-family: 'Outfit'; font-size: 10.5px; font-weight: 700; color: #e11d48; margin-bottom: 2px;">9. Role Access Control</div>
+              <div style="font-size: 8.8px; color: #334155;">Granular permissions: Student, Event Organizer Admin, and Super Admin.</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 11px;">
+              <div style="font-family: 'Outfit'; font-size: 10.5px; font-weight: 700; color: #e11d48; margin-bottom: 2px;">10. Student Passbook</div>
+              <div style="font-size: 8.8px; color: #334155;">Student dashboard displaying active passes, past attendance, and earned certificates.</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 11px;">
+              <div style="font-family: 'Outfit'; font-size: 10.5px; font-weight: 700; color: #e11d48; margin-bottom: 2px;">11. Analytics &amp; Reports</div>
+              <div style="font-size: 8.8px; color: #334155;">Visual breakdown of attendance rate, department share, and hall capacity utilization.</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 11px;">
+              <div style="font-family: 'Outfit'; font-size: 10.5px; font-weight: 700; color: #e11d48; margin-bottom: 2px;">12. Notification Pipeline</div>
+              <div style="font-size: 8.8px; color: #334155;">In-app toast notifications and transactional email confirmations via Nodemailer.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 2: Non-Functional Requirements -->
+        <section style="margin-bottom: 14px;">
+          <h2 class="section-title">
+            <span class="num-badge">2</span> Non-Functional Requirements
+          </h2>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+            <div class="card bg-sky-tint" style="padding: 7px 9px;">
+              <div style="font-weight: 700; color: #0369a1; font-size: 10px;">Performance</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 2px;">Sub-100ms camera scan verification &amp; dynamic PDF streaming.</div>
+            </div>
+            <div class="card bg-mint-tint" style="padding: 7px 9px;">
+              <div style="font-weight: 700; color: #047857; font-size: 10px;">Security</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 2px;">Bcrypt password hashing (10 salt rounds), JWT auth, and Helmet HTTP protection.</div>
+            </div>
+            <div class="card bg-rose-tint" style="padding: 7px 9px;">
+              <div style="font-weight: 700; color: #be123c; font-size: 10px;">Reliability</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 2px;">ACID transactions with row locks (FOR UPDATE) to prevent overbooking.</div>
+            </div>
+            <div class="card bg-lavender-tint" style="padding: 7px 9px;">
+              <div style="font-weight: 700; color: #6d28d9; font-size: 10px;">Usability</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 2px;">Responsive Tailwind UI with clear audio/visual feedback during camera scans.</div>
+            </div>
+            <div class="card bg-amber-tint" style="padding: 7px 9px;">
+              <div style="font-weight: 700; color: #b45309; font-size: 10px;">Scalability</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 2px;">Indexed foreign keys and connection pooling for concurrent seat bursts.</div>
+            </div>
+            <div class="card bg-mint-tint" style="padding: 7px 9px;">
+              <div style="font-weight: 700; color: #047857; font-size: 10px;">Maintainability</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 2px;">Modular Express MVC controllers, reusable React TypeScript components.</div>
+            </div>
+            <div class="card bg-sky-tint" style="padding: 7px 9px;">
+              <div style="font-weight: 700; color: #0369a1; font-size: 10px;">Compatibility</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 2px;">Desktop &amp; mobile web browsers (Chrome, Edge, Safari, Firefox).</div>
+            </div>
+            <div class="card bg-rose-tint" style="padding: 7px 9px;">
+              <div style="font-weight: 700; color: #be123c; font-size: 10px;">Data Integrity</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 2px;">Unique constraints on QR tokens, certificate IDs, and student attendance.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: Who uses it? (Role categories) -->
+        <section style="margin-bottom: 14px;">
+          <h2 class="section-title">
+            <span class="num-badge">3</span> Who uses it? (Role categories)
+          </h2>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+            <div class="card bg-lavender-tint" style="text-align: center; padding: 10px 8px;">
+              <div style="width: 32px; height: 32px; border-radius: 50%; background: #4f46e5; color: #ffffff; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-weight: 800; font-size: 13px;">S</div>
+              <div style="font-family: 'Outfit'; font-weight: 700; font-size: 11px; color: #0f172a;">Super Admin</div>
+              <div style="font-size: 8.5px; color: #475569; margin-top: 3px;">Global settings, user permissions, audit logs &amp; system-wide analytics.</div>
+            </div>
+            <div class="card bg-sky-tint" style="text-align: center; padding: 10px 8px;">
+              <div style="width: 32px; height: 32px; border-radius: 50%; background: #0284c7; color: #ffffff; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-weight: 800; font-size: 13px;">E</div>
+              <div style="font-family: 'Outfit'; font-weight: 700; font-size: 11px; color: #0f172a;">Event Admin</div>
+              <div style="font-size: 8.5px; color: #475569; margin-top: 3px;">Seminar publishing, quota configuration, live camera QR attendance scanner.</div>
+            </div>
+            <div class="card bg-amber-tint" style="text-align: center; padding: 10px 8px;">
+              <div style="width: 32px; height: 32px; border-radius: 50%; background: #d97706; color: #ffffff; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-weight: 800; font-size: 13px;">A</div>
+              <div style="font-family: 'Outfit'; font-weight: 700; font-size: 11px; color: #0f172a;">Student Attendee</div>
+              <div style="font-size: 8.5px; color: #475569; margin-top: 3px;">Seminar browsing, 1-click booking, pass retrieval, certificate downloads.</div>
+            </div>
+            <div class="card bg-mint-tint" style="text-align: center; padding: 10px 8px;">
+              <div style="width: 32px; height: 32px; border-radius: 50%; background: #059669; color: #ffffff; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-weight: 800; font-size: 13px;">V</div>
+              <div style="font-family: 'Outfit'; font-weight: 700; font-size: 11px; color: #0f172a;">External Verifier</div>
+              <div style="font-size: 8.5px; color: #475569; margin-top: 3px;">Public portal query by Certificate ID or QR scan to confirm credential validity.</div>
+            </div>
+          </div>
+          <div class="card bg-slate-tint" style="margin-top: 8px; padding: 6px 12px; font-size: 8.8px; color: #475569; text-align: center;">
+            Role enforcement is verified on every API request via JWT payload decoding and strict Express authorization middleware.
+          </div>
+        </section>
+
+        <!-- Section 4: Key Use Cases -->
+        <section>
+          <h2 class="section-title">
+            <span class="num-badge">4</span> Key Use Cases
+          </h2>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+            <div class="card bg-rose-tint" style="padding: 8px 9px;">
+              <div style="font-size: 9.5px; font-weight: 700; color: #9f1239;">1. Publish Seminar</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 3px;">Admin configures speaker, venue, registration deadlines, and seat limit.</div>
+            </div>
+            <div class="card bg-amber-tint" style="padding: 8px 9px;">
+              <div style="font-size: 9.5px; font-weight: 700; color: #92400e;">2. Instant Booking</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 3px;">Student books seat; receives cryptographically signed digital pass.</div>
+            </div>
+            <div class="card bg-sky-tint" style="padding: 8px 9px;">
+              <div style="font-size: 9.5px; font-weight: 700; color: #075985;">3. Camera Check-In</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 3px;">Organizer scans pass at entrance; attendance marked 'present' in DB.</div>
+            </div>
+            <div class="card bg-mint-tint" style="padding: 8px 9px;">
+              <div style="font-size: 9.5px; font-weight: 700; color: #065f46;">4. Verify Certificate</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 3px;">Attendee downloads vector PDF; recruiter verifies hash on public portal.</div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="footer-note" style="text-align: right;">
+        Joy University • Department of CSE &amp; Cybersecurity • Academic Session 2026-2027
+      </div>
+    </div>
+
+    <!-- ==========================================
+         PAGE 3: ARCHITECTURE & WORKFLOW
+    =========================================== -->
+    <div class="page" id="page-3">
+      <div>
+        <!-- Header -->
+        <header class="top-header">
+          <div class="header-left">
+            <div class="header-logo">
+              <div class="logo-grid">
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+              </div>
+            </div>
+            <div class="header-title-box">
+              <h1>JoySeminar</h1>
+              <p>From first registration to verified certificate</p>
+            </div>
+          </div>
+          <div class="header-right">
+            <span class="page-pill">PAGE 3 / 6</span>
+            <span class="page-topic-title">Architecture &amp; Workflow</span>
+          </div>
+        </header>
+
+        <!-- Main Body: Split into Left (Arch + Endpoints + Dataflow) & Right (Complete Workflow) -->
+        <div style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 14px; margin-bottom: 10px;">
+          <!-- LEFT COLUMN -->
+          <div>
+            <!-- Section 1: Architecture -->
+            <section style="margin-bottom: 12px;">
+              <h2 class="section-title">
+                <span class="num-badge">1</span> Architecture
+              </h2>
+              <div class="flex-col" style="gap: 7px;">
+                <div class="card bg-rose-tint" style="text-align: center; padding: 7px;">
+                  <div style="font-weight: 700; font-size: 10px; color: #9f1239;">University Users</div>
+                  <div style="font-size: 8.3px; color: #475569;">Students • Event Admins • Super Admins • Public Verifiers</div>
+                </div>
+                <div style="text-align: center; font-size: 10px; color: #94a3b8; line-height: 0.6;">▼</div>
+                <div class="card bg-lavender-tint" style="text-align: center; padding: 7px;">
+                  <div style="font-weight: 700; font-size: 10px; color: #581c87;">Browser Interface</div>
+                  <div style="font-size: 8.3px; color: #475569;">React 19 • TypeScript • Vite • Tailwind CSS • Lucide Icons</div>
+                </div>
+                <div style="text-align: center; font-size: 10px; color: #94a3b8; line-height: 0.6;">▼</div>
+                <div class="card bg-amber-tint" style="text-align: center; padding: 7px;">
+                  <div style="font-weight: 700; font-size: 10px; color: #78350f;">Client State Management</div>
+                  <div style="font-size: 8.3px; color: #475569;">AuthContext • HTML5-QRCode Scanner • Axios Interceptors</div>
+                </div>
+                <div style="text-align: center; font-size: 10px; color: #94a3b8; line-height: 0.6;">▼</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 7px;">
+                  <div class="card bg-sky-tint" style="text-align: center; padding: 7px;">
+                    <div style="font-weight: 700; font-size: 9.5px; color: #0369a1;">Express REST API</div>
+                    <div style="font-size: 8px; color: #475569;">Node.js / Express • JWT Guards</div>
+                  </div>
+                  <div class="card bg-slate-tint" style="text-align: center; padding: 7px; border-style: dashed;">
+                    <div style="font-weight: 700; font-size: 9.5px; color: #334155;">PDFKit &amp; Services</div>
+                    <div style="font-size: 8px; color: #475569;">Vector Certs • QR Engine</div>
+                  </div>
+                </div>
+                <div style="text-align: center; font-size: 10px; color: #94a3b8; line-height: 0.6;">▼</div>
+                <div class="card bg-mint-tint" style="text-align: center; padding: 7px;">
+                  <div style="font-weight: 700; font-size: 10px; color: #065f46;">PostgreSQL Database</div>
+                  <div style="font-size: 8.3px; color: #475569;">`seminar_system_db` • Connection Pool (`pg`) • Row Locks</div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Section 2: API Endpoints -->
+            <section style="margin-bottom: 12px;">
+              <h2 class="section-title">
+                <span class="num-badge">2</span> Key API Endpoints
+              </h2>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <div class="card bg-sky-tint" style="padding: 7px 9px;">
+                  <span class="washi-tape tape-yellow tape-left"></span>
+                  <div style="font-family: 'JetBrains Mono'; font-weight: 700; font-size: 9px; color: #0369a1;">/api/seminars</div>
+                  <div style="font-size: 8.3px; color: #334155; margin-top: 2px;">Catalog, topics, capacity quotas, admin CRUD</div>
+                </div>
+                <div class="card bg-mint-tint" style="padding: 7px 9px;">
+                  <span class="washi-tape tape-green tape-right"></span>
+                  <div style="font-family: 'JetBrains Mono'; font-weight: 700; font-size: 9px; color: #047857;">/api/attendance</div>
+                  <div style="font-size: 8.3px; color: #334155; margin-top: 2px;">Camera QR scanning, live check-in logs</div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Section 3: Data Flow -->
+            <section>
+              <h2 class="section-title">
+                <span class="num-badge">3</span> Data Flow
+              </h2>
+              <div class="card bg-slate-tint" style="padding: 8px 10px;">
+                <div style="font-size: 9px; color: #1e293b; line-height: 1.48;">
+                  <strong>1</strong> Student submits booking on React frontend.<br>
+                  <strong>2</strong> Express verifies JWT; checks seat availability with lock.<br>
+                  <strong>3</strong> PostgreSQL commits confirmed registration &amp; QR token.<br>
+                  <strong>4</strong> Organizer scans student pass via HTML5 camera at door.<br>
+                  <strong>5</strong> Backend checks duplicate guard; marks attendance.<br>
+                  <strong>6</strong> PDFKit streams certificate; public verify record activates.
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- RIGHT COLUMN: Section 4: Complete Workflow (1 to 9 steps) -->
+          <div>
+            <h2 class="section-title">
+              <span class="num-badge">4</span> Complete Workflow
+            </h2>
+            <div class="card bg-slate-tint" style="padding: 10px 12px; height: calc(100% - 32px); display: flex; flex-direction: column; justify-content: space-between;">
+              <div style="display: flex; gap: 9px; align-items: flex-start;">
+                <div style="width: 20px; height: 20px; border-radius: 50%; background: #f43f5e; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+                <div>
+                  <div style="font-weight: 700; font-size: 10px; color: #0f172a;">User Authentication</div>
+                  <div style="font-size: 8.3px; color: #64748b;">Role-based login issuing secure JWT tokens.</div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 9px; align-items: flex-start;">
+                <div style="width: 20px; height: 20px; border-radius: 50%; background: #f43f5e; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+                <div>
+                  <div style="font-weight: 700; font-size: 10px; color: #0f172a;">Seminar Publishing</div>
+                  <div style="font-size: 8.3px; color: #64748b;">Admin defines venue, speaker, and strict capacity.</div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 9px; align-items: flex-start;">
+                <div style="width: 20px; height: 20px; border-radius: 50%; background: #f43f5e; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+                <div>
+                  <div style="font-weight: 700; font-size: 10px; color: #0f172a;">Discovery &amp; Filtering</div>
+                  <div style="font-size: 8.3px; color: #64748b;">Students search by topic, department, and date.</div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 9px; align-items: flex-start;">
+                <div style="width: 20px; height: 20px; border-radius: 50%; background: #f43f5e; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">4</div>
+                <div>
+                  <div style="font-weight: 700; font-size: 10px; color: #0f172a;">Instant Seat Booking</div>
+                  <div style="font-size: 8.3px; color: #64748b;">Transactional capacity check and pass issuance.</div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 9px; align-items: flex-start;">
+                <div style="width: 20px; height: 20px; border-radius: 50%; background: #f43f5e; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+                <div>
+                  <div style="font-weight: 700; font-size: 10px; color: #0f172a;">Automated Waitlist Queue</div>
+                  <div style="font-size: 8.3px; color: #64748b;">If full, students queued in strict FIFO order.</div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 9px; align-items: flex-start;">
+                <div style="width: 20px; height: 20px; border-radius: 50%; background: #f43f5e; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">6</div>
+                <div>
+                  <div style="font-weight: 700; font-size: 10px; color: #0f172a;">Camera QR Scanning</div>
+                  <div style="font-size: 8.3px; color: #64748b;">Door attendants scan mobile passes with cameras.</div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 9px; align-items: flex-start;">
+                <div style="width: 20px; height: 20px; border-radius: 50%; background: #f43f5e; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">7</div>
+                <div>
+                  <div style="font-weight: 700; font-size: 10px; color: #0f172a;">Duplicate Conflict Guard</div>
+                  <div style="font-size: 8.3px; color: #64748b;">Prevents pass-sharing by locking to single check-in.</div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 9px; align-items: flex-start;">
+                <div style="width: 20px; height: 20px; border-radius: 50%; background: #f43f5e; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">8</div>
+                <div>
+                  <div style="font-weight: 700; font-size: 10px; color: #0f172a;">Vector Certificate Synthesis</div>
+                  <div style="font-size: 8.3px; color: #64748b;">PDFKit builds tamper-proof landscape certificates.</div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 9px; align-items: flex-start;">
+                <div style="width: 20px; height: 20px; border-radius: 50%; background: #f43f5e; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">9</div>
+                <div>
+                  <div style="font-weight: 700; font-size: 10px; color: #0f172a;">Public Credential Verification</div>
+                  <div style="font-size: 8.3px; color: #64748b;">Employers verify credentials via public QR link.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 5: Sample Setup - Joy University -->
+        <section>
+          <h2 class="section-title">
+            <span class="num-badge">5</span> Sample Setup - Joy University
+          </h2>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 7px;">
+            <span class="pill-tag" style="background:#e0f2fe;">Joy University Campus</span>
+            <span class="pill-tag" style="background:#fef3c7;">Auditorium &amp; Joveena Block</span>
+            <span class="pill-tag" style="background:#dcfce7;">Hall Capacity: 50 - 250 Seats</span>
+            <span class="pill-tag" style="background:#f3e8ff;">B.Tech CSE &amp; Cybersecurity</span>
+            <span class="pill-tag" style="background:#fee2e2;">Courses: 24BTCY151-156</span>
+            <span class="pill-tag" style="background:#ecfdf5;">Public Route: /verify-certificate/:id</span>
+          </div>
+          <div class="card bg-amber-tint" style="padding: 7px 11px; font-size: 8.8px; color: #78350f; border-color: #ca8a04;">
+            <strong>Implementation Note:</strong> Joy University deployment runs with strict JWT expiration (7 days), connection pooling with PostgreSQL 14+, and asynchronous transactional email dispatch via Nodemailer.
+          </div>
+        </section>
+      </div>
+
+      <div class="footer-note" style="text-align: right;">
+        Joy University • Department of CSE &amp; Cybersecurity • Academic Session 2026-2027
+      </div>
+    </div>
+
+    <!-- ==========================================
+         PAGE 4: MODULES & DATA
+    =========================================== -->
+    <div class="page" id="page-4">
+      <div>
+        <!-- Header -->
+        <header class="top-header">
+          <div class="header-left">
+            <div class="header-logo">
+              <div class="logo-grid">
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+              </div>
+            </div>
+            <div class="header-title-box">
+              <h1>JoySeminar</h1>
+              <p>Twelve modules, one integrated ecosystem</p>
+            </div>
+          </div>
+          <div class="header-right">
+            <span class="page-pill">PAGE 4 / 6</span>
+            <span class="page-topic-title">Modules &amp; Data</span>
+          </div>
+        </header>
+
+        <!-- Section 1: 12 Modules (4x3 grid) -->
+        <section style="margin-bottom: 12px;">
+          <h2 class="section-title">
+            <span class="num-badge">1</span> 12 Core Modules
+          </h2>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+            <div class="card bg-slate-tint" style="padding: 8px 10px;">
+              <div style="font-weight: 700; font-size: 9.8px; color: #0f172a;">1. Seminar Discovery</div>
+              <div style="font-size: 8.4px; color: #475569;">Search, filter by topic &amp; speaker profiles</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 10px;">
+              <div style="font-weight: 700; font-size: 9.8px; color: #0f172a;">2. Seat Booking Engine</div>
+              <div style="font-size: 8.4px; color: #475569;">Atomic quota allocation &amp; pass creation</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 10px;">
+              <div style="font-weight: 700; font-size: 9.8px; color: #0f172a;">3. QR Pass Generator</div>
+              <div style="font-size: 8.4px; color: #475569;">Dynamic matrix passes with UUID tokens</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 10px;">
+              <div style="font-weight: 700; font-size: 9.8px; color: #0f172a;">4. Live Camera Scanner</div>
+              <div style="font-size: 8.4px; color: #475569;">HTML5 camera scanner for door staff</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 10px;">
+              <div style="font-weight: 700; font-size: 9.8px; color: #0f172a;">5. Attendance Engine</div>
+              <div style="font-size: 8.4px; color: #475569;">Check-in logs &amp; duplicate collision guard</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 10px;">
+              <div style="font-weight: 700; font-size: 9.8px; color: #0f172a;">6. Certificate Synthesizer</div>
+              <div style="font-size: 8.4px; color: #475569;">Vector PDF generation with university seals</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 10px;">
+              <div style="font-weight: 700; font-size: 9.8px; color: #0f172a;">7. Verification Portal</div>
+              <div style="font-size: 8.4px; color: #475569;">Public credential check via certificate hash</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 10px;">
+              <div style="font-weight: 700; font-size: 9.8px; color: #0f172a;">8. FIFO Waitlist Pipeline</div>
+              <div style="font-size: 8.4px; color: #475569;">Auto-promotes students when seats open up</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 10px;">
+              <div style="font-weight: 700; font-size: 9.8px; color: #0f172a;">9. Student Dashboard</div>
+              <div style="font-size: 8.4px; color: #475569;">Passbook for active tickets &amp; certificates</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 10px;">
+              <div style="font-weight: 700; font-size: 9.8px; color: #0f172a;">10. Admin Event Console</div>
+              <div style="font-size: 8.4px; color: #475569;">Full lifecycle management &amp; capacity editing</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 10px;">
+              <div style="font-weight: 700; font-size: 9.8px; color: #0f172a;">11. Analytics &amp; Reports</div>
+              <div style="font-size: 8.4px; color: #475569;">Department turnout &amp; check-in charts</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 8px 10px;">
+              <div style="font-weight: 700; font-size: 9.8px; color: #0f172a;">12. Alert Dispatcher</div>
+              <div style="font-size: 8.4px; color: #475569;">In-app badges &amp; transactional Nodemailer emails</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 2: Data & Storage -->
+        <section style="margin-bottom: 12px;">
+          <h2 class="section-title">
+            <span class="num-badge">2</span> Data &amp; Storage Architecture
+          </h2>
+          <div class="grid-2">
+            <div class="card bg-mint-tint" style="border-color: #059669; padding: 10px 13px;">
+              <span class="washi-tape tape-green tape-left"></span>
+              <div style="font-family: 'Outfit'; font-weight: 700; font-size: 11px; color: #047857; margin-bottom: 4px;">
+                PostgreSQL Relational Storage
+              </div>
+              <ul style="padding-left: 14px; font-size: 9px; color: #334155; line-height: 1.45;">
+                <li>Normalized 3NF relational schema in `seminar_system_db`.</li>
+                <li>Transactional row-level locking (`SELECT ... FOR UPDATE`).</li>
+                <li>Foreign key cascades on registrations, attendance &amp; waitlist.</li>
+                <li>Indexed lookups on `qr_code_token`, `certificate_id` &amp; emails.</li>
+              </ul>
+            </div>
+            <div class="card bg-sky-tint" style="border-color: #0284c7; padding: 10px 13px;">
+              <span class="washi-tape tape-cyan tape-right"></span>
+              <div style="font-family: 'Outfit'; font-weight: 700; font-size: 11px; color: #0369a1; margin-bottom: 4px;">
+                Stateless JWT &amp; Client Caching
+              </div>
+              <ul style="padding-left: 14px; font-size: 9px; color: #334155; line-height: 1.45;">
+                <li>Cryptographically signed Bearer JWTs with 7-day expiration.</li>
+                <li>React Context state for live user session &amp; notifications.</li>
+                <li>Client-side localStorage pass caching for offline viewing.</li>
+                <li>Axios HTTP interceptors with auto-token injection.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: 7 Core Entities -->
+        <section style="margin-bottom: 12px;">
+          <h2 class="section-title">
+            <span class="num-badge">3</span> 7 Core Database Entities
+          </h2>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            <span class="pill-tag" style="background:#e0f2fe; font-family:'JetBrains Mono'; font-size:10px;">users</span>
+            <span class="pill-tag" style="background:#fce7f3; font-family:'JetBrains Mono'; font-size:10px;">seminars</span>
+            <span class="pill-tag" style="background:#dcfce7; font-family:'JetBrains Mono'; font-size:10px;">registrations</span>
+            <span class="pill-tag" style="background:#fef3c7; font-family:'JetBrains Mono'; font-size:10px;">attendance</span>
+            <span class="pill-tag" style="background:#ede9fe; font-family:'JetBrains Mono'; font-size:10px;">certificates</span>
+            <span class="pill-tag" style="background:#fee2e2; font-family:'JetBrains Mono'; font-size:10px;">waitlist</span>
+            <span class="pill-tag" style="background:#f1f5f9; font-family:'JetBrains Mono'; font-size:10px;">notifications</span>
+          </div>
+        </section>
+
+        <!-- Section 4: How they connect -->
+        <section style="margin-bottom: 12px;">
+          <h2 class="section-title">
+            <span class="num-badge">4</span> How they Connect (Entity Relationships)
+          </h2>
+          <div class="card bg-slate-tint" style="padding: 9px 12px; text-align: center; margin-bottom: 6px;">
+            <div style="font-family: 'JetBrains Mono'; font-size: 9.8px; color: #0f172a; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 9px; flex-wrap: wrap;">
+              <span>users</span> ──[1:N]──&gt; <span>registrations</span> &lt;──[N:1]── <span>seminars</span>
+              <span style="color:#64748b;">|</span>
+              <span>registrations</span> ──[1:1]──&gt; <span>attendance</span>
+              <span style="color:#64748b;">|</span>
+              <span>registrations</span> ──[1:1]──&gt; <span>certificates</span>
+            </div>
+            <div style="font-size: 8.5px; color: #64748b; margin-top: 4px;">
+              Relation Logic: <code>Registration = User_ID * Seminar_ID * Unique_QR_Token * Status</code>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 5: Implementation & Deployment -->
+        <section>
+          <h2 class="section-title">
+            <span class="num-badge">5</span> Implementation &amp; Deployment
+          </h2>
+          <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px;">
+            <span class="pill-tag" style="background:#f1f5f9; font-size:8.5px;">App.tsx</span>
+            <span class="pill-tag" style="background:#f1f5f9; font-size:8.5px;">StudentDashboard.tsx</span>
+            <span class="pill-tag" style="background:#f1f5f9; font-size:8.5px;">AdminAttendance.tsx</span>
+            <span class="pill-tag" style="background:#f1f5f9; font-size:8.5px;">VerifyCertificate.tsx</span>
+            <span class="pill-tag" style="background:#f1f5f9; font-size:8.5px;">server.js</span>
+            <span class="pill-tag" style="background:#f1f5f9; font-size:8.5px;">schema.sql</span>
+            <span class="pill-tag" style="background:#f1f5f9; font-size:8.5px;">pdfService.js</span>
+            <span class="pill-tag" style="background:#f1f5f9; font-size:8.5px;">qrService.js</span>
+            <span class="pill-tag" style="background:#f1f5f9; font-size:8.5px;">waitlistService.js</span>
+          </div>
+          <div class="card bg-amber-tint" style="padding: 7px 11px; font-size: 8.8px; color: #78350f;">
+            <strong>Tech Stack:</strong> Frontend: React 19 + TypeScript + Vite + Tailwind CSS. Backend: Node.js + Express REST API. Database: PostgreSQL 14+. Vector PDF &amp; QR: PDFKit &amp; node-qrcode.
+          </div>
+        </section>
+      </div>
+
+      <div class="footer-note" style="text-align: right;">
+        Joy University • Department of CSE &amp; Cybersecurity • Academic Session 2026-2027
+      </div>
+    </div>
+
+    <!-- ==========================================
+         PAGE 5: ALGORITHM & CONFLICTS
+    =========================================== -->
+    <div class="page" id="page-5">
+      <div>
+        <!-- Header -->
+        <header class="top-header">
+          <div class="header-left">
+            <div class="header-logo">
+              <div class="logo-grid">
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+              </div>
+            </div>
+            <div class="header-title-box">
+              <h1>JoySeminar</h1>
+              <p>Check every rule, validate every token, protect credentials</p>
+            </div>
+          </div>
+          <div class="header-right">
+            <span class="page-pill">PAGE 5 / 6</span>
+            <span class="page-topic-title">Algorithm &amp; Security Logic</span>
+          </div>
+        </header>
+
+        <!-- Section 1: Verification Algorithm -->
+        <section style="margin-bottom: 14px;">
+          <h2 class="section-title">
+            <span class="num-badge">1</span> QR Verification &amp; Attendance Pipeline
+          </h2>
+          <div style="display: grid; grid-template-columns: 1.18fr 0.82fr; gap: 11px;">
+            <!-- Pseudocode on left -->
+            <div class="code-box">
+<span class="code-keyword">PROCEDURE</span> <span class="code-func">ScanAndMarkAttendance</span>(qrToken, seminarId, adminUser):
+  <span class="code-keyword">BEGIN TRANSACTION</span>
+  <span class="code-comment">// 1. Lookup registration by cryptographic token</span>
+  reg = <span class="code-keyword">SELECT</span> * <span class="code-keyword">FROM</span> registrations 
+        <span class="code-keyword">WHERE</span> qr_code_token = qrToken <span class="code-keyword">FOR UPDATE</span>;
+  
+  <span class="code-keyword">IF</span> reg IS NULL <span class="code-keyword">THEN</span>
+    <span class="code-keyword">ROLLBACK</span>; <span class="code-keyword">RETURN REJECT</span>(<span class="code-str">"Invalid or Unrecognized QR Pass"</span>);
+  <span class="code-keyword">IF</span> reg.status != <span class="code-str">'confirmed'</span> <span class="code-keyword">THEN</span>
+    <span class="code-keyword">ROLLBACK</span>; <span class="code-keyword">RETURN REJECT</span>(<span class="code-str">"Pass is not confirmed"</span>);
+  <span class="code-keyword">IF</span> reg.seminar_id != seminarId <span class="code-keyword">THEN</span>
+    <span class="code-keyword">ROLLBACK</span>; <span class="code-keyword">RETURN REJECT</span>(<span class="code-str">"Pass belongs to another seminar"</span>);
+
+  <span class="code-comment">// 2. Check for duplicate scan collision</span>
+  att = <span class="code-keyword">SELECT</span> * <span class="code-keyword">FROM</span> attendance 
+        <span class="code-keyword">WHERE</span> registration_id = reg.id;
+  <span class="code-keyword">IF</span> att EXISTS <span class="code-keyword">THEN</span>
+    <span class="code-keyword">ROLLBACK</span>; <span class="code-keyword">RETURN REJECT</span>(<span class="code-str">"ALREADY CHECKED IN at "</span> + att.check_in_time);
+
+  <span class="code-comment">// 3. Record attendance &amp; release transaction</span>
+  <span class="code-keyword">INSERT INTO</span> attendance(registration_id, check_in_time, status, marked_by)
+  <span class="code-keyword">VALUES</span> (reg.id, CURRENT_TIMESTAMP, <span class="code-str">'present'</span>, adminUser.id);
+  <span class="code-keyword">COMMIT</span>;
+
+  <span class="code-comment">// 4. Dispatch notification &amp; activate certificate eligibility</span>
+  <span class="code-func">TriggerCertificateGeneration</span>(reg.id);
+  <span class="code-func">SendConfirmationAlert</span>(reg.user_id, <span class="code-str">"Attendance Verified"</span>);
+  <span class="code-keyword">RETURN SUCCESS</span>(<span class="code-str">"Check-in Confirmed: Welcome "</span> + reg.student_name);
+<span class="code-keyword">END PROCEDURE</span></div>
+
+            <!-- Right notes -->
+            <div class="flex-col" style="gap: 8px;">
+              <div class="card bg-amber-tint" style="padding: 9px 11px;">
+                <span class="washi-tape tape-yellow tape-left"></span>
+                <div style="font-family: 'Outfit'; font-weight: 700; font-size: 10.5px; color: #78350f; margin-bottom: 2px;">How it Works</div>
+                <div style="font-size: 8.8px; color: #451a03; line-height: 1.38;">
+                  The camera scan decodes the encrypted token string. A 4-layer validation pipeline checks token authenticity, active status, seminar scope, and duplicate guards in sub-100ms.
+                </div>
+              </div>
+
+              <div class="card bg-mint-tint" style="padding: 9px 11px;">
+                <span class="washi-tape tape-green tape-right"></span>
+                <div style="font-family: 'Outfit'; font-weight: 700; font-size: 10.5px; color: #047857; margin-bottom: 2px;">FIFO Waitlist Promotion</div>
+                <div style="font-size: 8.8px; color: #064e3b; line-height: 1.38;">
+                  When a cancellation occurs, the engine locks the waitlist with <code>FOR UPDATE</code>, fetches the student at position 1, generates their pass, and notifies them via email automatically.
+                </div>
+              </div>
+
+              <div class="card bg-sky-tint" style="padding: 9px 11px;">
+                <div style="font-family: 'Outfit'; font-weight: 700; font-size: 10.5px; color: #0369a1; margin-bottom: 2px;">Inputs &amp; Security State</div>
+                <div style="font-size: 8.8px; color: #0c4a6e; line-height: 1.38;">
+                  Inputs: <code>qr_code_token</code>, <code>seminar_id</code>, <code>admin_id</code>. State: ACID compliant PostgreSQL relational commit.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 2: 6 Conflict Types & Security Edge Cases -->
+        <section style="margin-bottom: 14px;">
+          <h2 class="section-title">
+            <span class="num-badge">2</span> 6 Critical Security Checks &amp; Conflict Resolvers
+          </h2>
+          <div class="grid-3" style="gap: 10px;">
+            <div class="card bg-rose-tint" style="padding: 9px 11px;">
+              <span class="washi-tape tape-pink tape-left"></span>
+              <div style="font-weight: 700; font-size: 10px; color: #be123c;">1. Duplicate Scan Guard</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 3px;">Prevents pass-sharing among students. Re-scans return previous timestamp.</div>
+            </div>
+            <div class="card bg-sky-tint" style="padding: 9px 11px;">
+              <span class="washi-tape tape-cyan tape-center"></span>
+              <div style="font-weight: 700; font-size: 10px; color: #0369a1;">2. Cross-Seminar Collision</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 3px;">Prevents a pass for Seminar A from being accepted at Seminar B's entrance.</div>
+            </div>
+            <div class="card bg-amber-tint" style="padding: 9px 11px;">
+              <span class="washi-tape tape-yellow tape-right"></span>
+              <div style="font-weight: 700; font-size: 10px; color: #b45309;">3. Over-Capacity Race Condition</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 3px;">Row-level locking (`FOR UPDATE`) halts registrations once capacity hits 0.</div>
+            </div>
+            <div class="card bg-lavender-tint" style="padding: 9px 11px;">
+              <span class="washi-tape tape-pink tape-left"></span>
+              <div style="font-weight: 700; font-size: 10px; color: #6d28d9;">4. Tamper-Proof Certificate Hash</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 3px;">Unique hash token prevents forging or photoshopping certificates.</div>
+            </div>
+            <div class="card bg-mint-tint" style="padding: 9px 11px;">
+              <span class="washi-tape tape-green tape-center"></span>
+              <div style="font-weight: 700; font-size: 10px; color: #047857;">5. Waitlist Queue Starvation</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 3px;">Ordered promotion guarantees first-come first-served queue fairness.</div>
+            </div>
+            <div class="card bg-slate-tint" style="padding: 9px 11px;">
+              <span class="washi-tape tape-yellow tape-right"></span>
+              <div style="font-weight: 700; font-size: 10px; color: #334155;">6. RBAC Privilege Escalation</div>
+              <div style="font-size: 8.5px; color: #334155; margin-top: 3px;">JWT role middleware blocks unauthorized students from scanner endpoints.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3 & 4: Strengths & Limits -->
+        <div class="grid-2">
+          <section>
+            <h2 class="section-title">
+              <span class="num-badge">3</span> Strengths
+            </h2>
+            <div class="card bg-mint-tint" style="border-color: #059669; padding: 9px 12px;">
+              <ul style="padding-left: 14px; font-size: 9px; color: #064e3b; line-height: 1.48;">
+                <li>Sub-second camera scan eliminates long paper entrance lines.</li>
+                <li>ACID relational guarantees prevent overselling hall capacity.</li>
+                <li>Fully automated certificate pipeline saves hours of admin work.</li>
+                <li>Public verification portal provides instant employer trust.</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2 class="section-title">
+              <span class="num-badge">4</span> Limits
+            </h2>
+            <div class="card bg-rose-tint" style="border-color: #e11d48; padding: 9px 12px;">
+              <ul style="padding-left: 14px; font-size: 9px; color: #881337; line-height: 1.48;">
+                <li>Live camera validation requires active network connectivity.</li>
+                <li>Scanning speed dependent on venue lighting and camera focus.</li>
+                <li>Email notifications require reliable external SMTP relay.</li>
+                <li>Future: Offline scanner cache with delayed batch sync.</li>
+              </ul>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="footer-note" style="text-align: right;">
+        Joy University • Department of CSE &amp; Cybersecurity • Academic Session 2026-2027
+      </div>
+    </div>
+
+    <!-- ==========================================
+         PAGE 6: TESTING, FUTURE WORK & CONCLUSION
+    =========================================== -->
+    <div class="page" id="page-6">
+      <div>
+        <!-- Header -->
+        <header class="top-header">
+          <div class="header-left">
+            <div class="header-logo">
+              <div class="logo-grid">
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+                <div class="logo-dot"></div>
+              </div>
+            </div>
+            <div class="header-title-box">
+              <h1>JoySeminar</h1>
+              <p>Test it, know the limits, plan the next step</p>
+            </div>
+          </div>
+          <div class="header-right">
+            <span class="page-pill">PAGE 6 / 6</span>
+            <span class="page-topic-title">Testing, Future Work &amp; Conclusion</span>
+          </div>
+        </header>
+
+        <!-- Section 1: Test Cases (12 Test Cases in 2 columns) -->
+        <section style="margin-bottom: 12px;">
+          <h2 class="section-title">
+            <span class="num-badge">1</span> Test Cases &amp; Validation Matrix
+          </h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <table class="clean-table">
+              <thead>
+                <tr>
+                  <th style="width: 40px;">ID</th>
+                  <th>Scenario</th>
+                  <th>Expected Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge-tc">TC01</span></td>
+                  <td>User Login</td>
+                  <td>JWT Bearer token returned &amp; stored</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-tc">TC02</span></td>
+                  <td>Create Seminar</td>
+                  <td>Record saved; capacity quota set</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-tc">TC03</span></td>
+                  <td>Seat Booking</td>
+                  <td>Registration created; capacity - 1</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-tc">TC04</span></td>
+                  <td>Over-Capacity</td>
+                  <td>Student transferred to FIFO waitlist</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-tc">TC05</span></td>
+                  <td>Cancellation</td>
+                  <td>Waitlist position 1 auto-promoted</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-tc">TC06</span></td>
+                  <td>QR Generation</td>
+                  <td>Valid vector QR pass downloadable</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <table class="clean-table">
+              <thead>
+                <tr>
+                  <th style="width: 40px;">ID</th>
+                  <th>Scenario</th>
+                  <th>Expected Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge-tc">TC07</span></td>
+                  <td>Valid Camera Scan</td>
+                  <td>Marked 'present'; audio chime</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-tc">TC08</span></td>
+                  <td>Duplicate Scan</td>
+                  <td>Rejected: "Already checked in"</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-tc">TC09</span></td>
+                  <td>Wrong Seminar Scan</td>
+                  <td>Rejected: "Pass belongs to other event"</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-tc">TC10</span></td>
+                  <td>Certificate PDF</td>
+                  <td>Landscape PDF stream with verify QR</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-tc">TC11</span></td>
+                  <td>Public Verify Route</td>
+                  <td>Valid certificate details returned</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-tc">TC12</span></td>
+                  <td>Database Health</td>
+                  <td>/api/health confirms PG pool status</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card bg-slate-tint" style="margin-top: 5px; padding: 5px 10px; font-size: 8.3px; color: #475569; text-align: center;">
+            All 12 test cases verified against local and deployed Joy University environments.
+          </div>
+        </section>
+
+        <!-- Section 2: Results -->
+        <section style="margin-bottom: 12px;">
+          <h2 class="section-title">
+            <span class="num-badge">2</span> Results
+          </h2>
+          <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+            <span class="pill-tag" style="background:#e0f2fe;">100% Paperless Passes</span>
+            <span class="pill-tag" style="background:#dcfce7;">Sub-100ms QR Verification</span>
+            <span class="pill-tag" style="background:#fee2e2;">Zero Duplicate Check-Ins</span>
+            <span class="pill-tag" style="background:#fef3c7;">Automated FIFO Waitlist</span>
+            <span class="pill-tag" style="background:#f3e8ff;">Automated PDF Certificates</span>
+            <span class="pill-tag" style="background:#ede9fe;">Public Hash Verification</span>
+            <span class="pill-tag" style="background:#f1f5f9;">Real-Time Turnout Roster</span>
+          </div>
+        </section>
+
+        <!-- Section 3 & 4: Limitations & Future Enhancements -->
+        <div style="display: grid; grid-template-columns: 1fr 1.25fr; gap: 10px; margin-bottom: 12px;">
+          <section>
+            <h2 class="section-title">
+              <span class="num-badge">3</span> Limitations
+            </h2>
+            <div class="card bg-rose-tint" style="padding: 8px 11px;">
+              <ul style="padding-left: 14px; font-size: 8.8px; color: #881337; line-height: 1.45;">
+                <li>No offline PWA mode for zero-connectivity halls.</li>
+                <li>Biometric / facial check-in is not yet integrated.</li>
+                <li>Single campus scope; multi-tenant cluster planned.</li>
+                <li>SMS alerts require commercial carrier gateway.</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2 class="section-title">
+              <span class="num-badge">4</span> Future Enhancements
+            </h2>
+            <div class="card bg-sky-tint" style="padding: 8px 11px;">
+              <span class="washi-tape tape-green tape-right"></span>
+              <div class="check-item"><span class="custom-check"></span> Progressive Web App (PWA) with offline SQLite cache &amp; sync</div>
+              <div class="check-item"><span class="custom-check"></span> AI recommendation engine matching seminars to student GPA &amp; track</div>
+              <div class="check-item"><span class="custom-check"></span> Joy University ERP &amp; RFID Smart Card contactless tap-in</div>
+              <div class="check-item"><span class="custom-check"></span> Live interactive Q&amp;A and speaker rating polling during talks</div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Section 5: Conclusion -->
+        <section style="margin-bottom: 12px;">
+          <h2 class="section-title">
+            <span class="num-badge">5</span> Conclusion
+          </h2>
+          <div class="card bg-slate-tint" style="padding: 8px 12px; font-size: 9px; line-height: 1.45; color: #1e293b; background: #0f172a; color: #f8fafc; border-color: #1e293b;">
+            JoySeminar transforms university seminar administration from disorganized paper slips and chaotic attendance lines into a streamlined, cryptographically secure full-stack web ecosystem. Featuring digital QR passes, real-time camera scanning, automated FIFO waitlists, and tamper-proof PDF certification with public hash verification, it establishes an enterprise foundation for Joy University's academic operations. Built with React 19, TypeScript, Express, and PostgreSQL.
+          </div>
+        </section>
+
+        <!-- Section 6: References & Links -->
+        <section>
+          <h2 class="section-title">
+            <span class="num-badge">6</span> References &amp; Links
+          </h2>
+          <div style="font-size: 8.3px; color: #475569; line-height: 1.38; padding: 2px 4px;">
+            1. IEEE Standard for Software Test Documentation, IEEE Std 829-2008.<br>
+            2. React 19 Documentation &amp; Server Components Architecture, <code>react.dev</code>.<br>
+            3. PostgreSQL Global Development Group, PostgreSQL 16 Reference Manual, <code>postgresql.org</code>.<br>
+            4. PDFKit Vector Document Generation Engine, <code>pdfkit.org</code>.<br>
+            5. Joy University Online Seminar Registration System snapshot, Academic Session 2026-2027.
+          </div>
+          <div style="margin-top: 5px; font-size: 8.6px; color: #0284c7; font-weight: 600; display: flex; justify-content: space-between;">
+            <span>Live Campus Portal: http://localhost:5173</span>
+            <span>API Health: http://localhost:5000/api/health</span>
+            <span>Verification: /verify-certificate/:id</span>
+          </div>
+        </section>
+      </div>
+
+      <div class="footer-note" style="text-align: right;">
+        Joy University • Department of CSE &amp; Cybersecurity • Academic Session 2026-2027
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

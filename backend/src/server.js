@@ -70,6 +70,16 @@ app.use('/api/auth/login', authLimiter);
 app.use('/api/auth/admin-login', authLimiter);
 app.use('/api/auth/register', authLimiter);
 
+// Root Welcome Handler
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: '🎓 Joy University Seminar System API is running!',
+    healthCheck: '/api/health',
+    timestamp: new Date().toISOString(),
+  });
+});
+
 // API Health Check
 app.get('/api/health', (req, res) => {
   res.json({

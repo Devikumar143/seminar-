@@ -6,17 +6,27 @@ const { generatePassPDF } = require('../services/pdfService');
 
 // 1. Register for a seminar (or join waitlist if full)
 async function registerForSeminar(req, res, next) {
+  const { seminar_id } = req.body;
+  const userId = req.user.id;
+  const userRole = req.user.role;
+
+  // Disallow admins from registering for seminars
+  if (userRole === 'super_admin' || userRole === 'event_admin' || userRole === 'admin') {
+    return res.status(403).json({
+      success: false,
+      message: 'Administrators cannot register for seminars. Seminar registration is only for students.',
+    });
+  }
+
+  if (!seminar_id) {
+    return res.status(400).json({
+      success: false,
+      message: 'Seminar ID is required.',
+    });
+  }
+
   const client = await db.getClient();
   try {
-    const { seminar_id } = req.body;
-    const userId = req.user.id;
-
-    if (!seminar_id) {
-      return res.status(400).json({
-        success: false,
-        message: 'Seminar ID is required.',
-      });
-    }
 
     await client.query('BEGIN');
 

@@ -20,7 +20,7 @@ import { PassModal } from '../components/PassModal';
 
 export const SeminarDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isAdmin } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
 
@@ -54,6 +54,10 @@ export const SeminarDetail: React.FC = () => {
     if (!isAuthenticated) {
       showToast('Please log in with your student credentials to register.', 'info');
       navigate('/login', { state: { from: { pathname: `/seminars/${id}` } } });
+      return;
+    }
+    if (isAdmin) {
+      showToast('Administrators cannot register for seminars. Seminar registration is only for students.', 'warning');
       return;
     }
     setConfirmModalOpen(true);
@@ -326,7 +330,22 @@ export const SeminarDetail: React.FC = () => {
             </div>
 
             {/* Action Buttons based on state */}
-            {isRegistered ? (
+            {isAdmin ? (
+              <div className="space-y-3">
+                <div className="p-3.5 bg-amber-50 border border-amber-200 rounded-lg text-center space-y-1">
+                  <p className="text-xs font-semibold text-amber-900">Admin Account</p>
+                  <p className="text-[11px] text-amber-700 leading-relaxed">
+                    Administrators cannot register for seminars. Seminar registration is reserved for students.
+                  </p>
+                </div>
+                <Link
+                  to="/admin/seminars"
+                  className="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-2 shadow-xs"
+                >
+                  <span>Manage in Admin Portal</span>
+                </Link>
+              </div>
+            ) : isRegistered ? (
               <div className="space-y-3">
                 <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center gap-2 text-xs text-emerald-800 font-semibold">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
